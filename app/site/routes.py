@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from helpers import token_required
 from models import db, User, Recipe, recipe_schema, recipes_schema
 from flask import Blueprint, request, jsonify, render_template
+from flask_login import current_user
 
 site = Blueprint('site', __name__, template_folder='site_templates')
 
@@ -15,10 +16,10 @@ def profile():
 
 @site.route('/recipe_card')
 def recipe_card():
-    return render_template('recipe_card.html')
+    return render_template('recipe_card.html', access_token=current_user.token)
     
 @site.route('/recipes')
 def recipes():
     recipes = Recipe.query
-    return render_template('recipes.html', title='Recipe Table', recipes=recipes)
+    return render_template('recipes.html', title='Recipe Table', recipes=recipes, userAccessToken=current_user.token)
 
